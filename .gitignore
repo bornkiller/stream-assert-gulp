@@ -1,1 +1,5 @@
 node_modules
+.idea
+.DG*
+/.idea/inspectionProfiles/*.xml
+/.idea/inspectionProfiles/profiles_settings.xml
