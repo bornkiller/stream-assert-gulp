@@ -68,15 +68,20 @@ match the assertion then pass success.
 Calls `assertion` function on every-child element in stream. Only if any of the elements
 match the assertion, then pass success.
 
-## Next
-Till now, it doesn't support chain assert, neither `stream-assert`, pay attention when
-you need chain assert. Usage below won't cause problem, but only the last one assertion
-worked. See it next middle version upgrade.
+## Assert chain
+As promised, now it does support chain assert after v0.2.x, better than `stream-assert`.  
+Pay attention when you need chain assert, assert below just work right, when all the 
+assertion passed, the `done` callback has no argument. when any assertion failed, it 
+will jump to the end, and `done` callback has error(this assertion throwed) as first 
+argument.
+
+Till now, `length`, `nth`, `first`, `last` support chained asssertion, `all` and `any`
+doesn't, just be careful with this.
 
 ```js
 gulp.src('./test/fixtures/template.js')
     .pipe(assert.first(function(data) { data.should.eql(1); }))
-    .pipe(assert.second(function(data) { data.should.eql(2); }))
+    .pipe(assert.last(function(data) { data.should.eql(2); }))
     .pipe(assert.nth(2, function(data) { data.should.eql(3); }))
     .on('end', done);
 ```
