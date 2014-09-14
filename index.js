@@ -4,18 +4,30 @@ var assert = {};
 assert.nth = function(index, assertion) {
     var assetStorage = [];
     var stream;
+    var error;
     stream = through(function (file, encoding, callback) {
-        this.push(file);
-        assetStorage.push(file);
+        if (file instanceof Error) {
+            error = file;
+        } else {
+            this.push(file);
+            assetStorage.push(file);
+        }
         callback();
     }, function (callback) {
-        try {
-            assertion(assetStorage[index-1]);
-            this.emit('end');
+        if (error instanceof Error) {
+            this.push(error);
+            this.emit('end', error);
             callback();
-        } catch (err) {
-            this.emit('end', err);
-            callback();
+        } else {
+            try {
+                assertion(assetStorage[index-1]);
+                this.emit('end');
+                callback();
+            } catch (err) {
+                this.push(err);
+                this.emit('end', err);
+                callback();
+            }
         }
     });
 
@@ -25,18 +37,30 @@ assert.nth = function(index, assertion) {
 assert.first = function(assertion) {
     var assetStorage = [];
     var stream;
+    var error;
     stream = through(function (file, encoding, callback) {
-        this.push(file);
-        assetStorage.push(file);
+        if (file instanceof Error) {
+            error = file;
+        } else {
+            this.push(file);
+            assetStorage.push(file);
+        }
         callback();
     }, function (callback) {
-        try {
-            assertion(assetStorage[0]);
-            this.emit('end');
+        if (error instanceof Error) {
+            this.push(error);
+            this.emit('end', error);
             callback();
-        } catch (err) {
-            this.emit('end', err);
-            callback();
+        } else {
+            try {
+                assertion(assetStorage[0]);
+                this.emit('end');
+                callback();
+            } catch (err) {
+                this.push(err);
+                this.emit('end', err);
+                callback();
+            }
         }
     });
 
@@ -46,19 +70,31 @@ assert.first = function(assertion) {
 assert.last = function(assertion) {
     var assetStorage = [];
     var stream;
+    var error;
     stream = through(function (file, encoding, callback) {
-        this.push(file);
-        assetStorage.push(file);
+        if (file instanceof Error) {
+            error = file;
+        } else {
+            this.push(file);
+            assetStorage.push(file);
+        }
         callback();
     }, function (callback) {
-        try {
-            var length = assetStorage.length;
-            assertion(assetStorage[length-1]);
-            this.emit('end');
+        if (error instanceof Error) {
+            this.push(error);
+            this.emit('end', error);
             callback();
-        } catch (err) {
-            this.emit('end', err);
-            callback();
+        } else {
+            try {
+                var length = assetStorage.length;
+                assertion(assetStorage[length-1]);
+                this.emit('end');
+                callback();
+            } catch (err) {
+                this.push(err);
+                this.emit('end', err);
+                callback();
+            }
         }
     });
 
@@ -130,21 +166,34 @@ assert.any = function(assertion) {
 
     return stream;
 };
+
 assert.length = function(count) {
     var assetStorage = [];
     var stream;
+    var error;
     stream = through(function (file, encoding, callback) {
-        this.push(file);
-        assetStorage.push(file);
+        if (file instanceof Error) {
+            error = file;
+        } else {
+            this.push(file);
+            assetStorage.push(file);
+        }
         callback();
     }, function (callback) {
-        try {
-            (assetStorage.length).should.equal(count);
-            this.emit('end');
+        if (error instanceof Error) {
+            this.push(error);
+            this.emit('end', error);
             callback();
-        } catch (err) {
-            this.emit('end', err);
-            callback();
+        } else {
+            try {
+                (assetStorage.length).should.equal(count);
+                this.emit('end');
+                callback();
+            } catch (err) {
+                this.push(err);
+                this.emit('end', err);
+                callback();
+            }
         }
     });
 
