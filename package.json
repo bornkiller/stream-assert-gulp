@@ -1,6 +1,6 @@
 {
   "name": "stream-assert-gulp",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "simplify assertion library for gulp streams",
   "main": "index.js",
   "scripts": {
@@ -23,7 +23,7 @@
   "homepage": "https://github.com/bornkiller/stream-assert-gulp.git",
   "dependencies": {
     "should": "^4.0.4",
-    "through-gulp": "^0.1.6"
+    "through-gulp": "^0.2.0"
   },
   "devDependencies": {
     "gulp": "^3.8.7",
