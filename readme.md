@@ -1,5 +1,6 @@
 # stream-assert-gulp
 ![Build Status](https://img.shields.io/travis/bornkiller/stream-assert-gulp/master.svg?style=flat)
+![Coverage Report](http://img.shields.io/coveralls/bornkiller/stream-assert-gulp.svg?style=flat)
 ![Package Dependency](https://david-dm.org/bornkiller/stream-assert-gulp.svg?style=flat)
 ![Package DevDependency](https://david-dm.org/bornkiller/stream-assert-gulp/dev-status.svg?style=flat)
 
