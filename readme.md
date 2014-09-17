@@ -51,6 +51,9 @@ Calls `assertion` function on nth-child element in stream.
 
 Calls `assertion` function on first-child element in stream.
 
+#### second(assertion)
+
+Calls `assertion` function on first-child element in stream.
 #### last(assertion)
 
 Calls `assertion` function on last-child element in stream.
@@ -76,14 +79,24 @@ assertion passed, the `done` callback has no argument. when any assertion failed
 will jump to the end, and `done` callback has error(this assertion throwed) as first 
 argument.
 
-Till now, `length`, `nth`, `first`, `last` support chained asssertion, `all` and `any`
-doesn't, just be careful with this.
+Till now, `length`, `nth`, `first`, `last` support chained asssertion, also, `all` and `any`
+works for chained assertion since v0.4.0.
 
 ```js
-gulp.src('./test/fixtures/template.js')
-    .pipe(assert.first(function(data) { data.should.eql(1); }))
-    .pipe(assert.last(function(data) { data.should.eql(2); }))
-    .pipe(assert.nth(2, function(data) { data.should.eql(3); }))
+gulp.src(['./test/fixtures/template.js', './test/fixtures/destiny.js'])
+    .pipe(assert.length(1))
+    .pipe(assert.first(function(file) {
+        (file.contents.toString()).should.equal("define('destiny',[],function(){});");
+    }))
+    .pipe(assert.nth(2, function(file) {
+        (file.contents.toString()).should.equal("define('template',[],function(){});");
+    }))
+    .pipe(assert.any(function(file) {
+        (file.isBuffer()).should.be.true;
+    }))
+    .pipe(assert.all(function(file) {
+        (file.isStream()).should.be.false;
+    }))
     .on('end', done);
 ```
 

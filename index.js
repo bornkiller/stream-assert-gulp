@@ -67,6 +67,39 @@ assert.first = function(assertion) {
     return stream;
 };
 
+assert.second = function(assertion) {
+    var assetStorage = [];
+    var stream;
+    var error;
+    stream = through(function (file, encoding, callback) {
+        if (file instanceof Error) {
+            error = file;
+        } else {
+            this.push(file);
+            assetStorage.push(file);
+        }
+        callback();
+    }, function (callback) {
+        if (error instanceof Error) {
+            this.push(error);
+            this.emit('end', error);
+            callback();
+        } else {
+            try {
+                assertion(assetStorage[1]);
+                this.emit('end');
+                callback();
+            } catch (err) {
+                this.push(err);
+                this.emit('end', err);
+                callback();
+            }
+        }
+    });
+
+    return stream;
+};
+
 assert.last = function(assertion) {
     var assetStorage = [];
     var stream;
@@ -107,29 +140,39 @@ assert.all = function(assertion) {
     var flag;
     var error;
     stream = through(function (file, encoding, callback) {
-        this.push(file);
-        assetStorage.push(file);
+        if (file instanceof Error) {
+            error = file;
+        } else {
+            this.push(file);
+            assetStorage.push(file);
+        }
         callback();
     }, function (callback) {
-        flag = assetStorage.every(function(file) {
-            try {
-                assertion(file);
-                return true;
-            } catch (err) {
-                error = err;
-                return false;
-            }
-        });
-
-        if (flag) {
-            this.emit('end');
-            callback();
-        } else {
+        if (error instanceof Error) {
+            this.push(error);
             this.emit('end', error);
             callback();
-        }
+        } else {
+            flag = assetStorage.every(function(file) {
+                try {
+                    assertion(file);
+                    return true;
+                } catch (err) {
+                    error = err;
+                    return false;
+                }
+            });
 
-    });
+            if (flag) {
+                this.emit('end');
+                callback();
+            } else {
+                this.push(error);
+                this.emit('end', error);
+                callback();
+            }
+        }
+     });
 
     return stream;
 };
@@ -140,28 +183,38 @@ assert.any = function(assertion) {
     var flag;
     var error;
     stream = through(function (file, encoding, callback) {
-        this.push(file);
-        assetStorage.push(file);
+        if (file instanceof Error) {
+            error = file;
+        } else {
+            this.push(file);
+            assetStorage.push(file);
+        }
         callback();
     }, function (callback) {
-        flag = assetStorage.some(function(file) {
-            try {
-                assertion(file);
-                return true;
-            } catch (err) {
-                error = err;
-                return false;
-            }
-        });
-
-        if (flag) {
-            this.emit('end');
-            callback();
-        } else {
+        if (error instanceof Error) {
+            this.push(error);
             this.emit('end', error);
             callback();
-        }
+        } else {
+            flag = assetStorage.some(function(file) {
+                try {
+                    assertion(file);
+                    return true;
+                } catch (err) {
+                    error = err;
+                    return false;
+                }
+            });
 
+            if (flag) {
+                this.emit('end');
+                callback();
+            } else {
+                this.push(error);
+                this.emit('end', error);
+                callback();
+            }
+        }
     });
 
     return stream;
