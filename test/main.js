@@ -51,6 +51,15 @@ describe('assert nth-child', function () {
 });
 
 describe('assert length', function () {
+    it('should work with many files', function (done) {
+        gulp.src(['./test/fixtures/many-files/*.js'])
+            .pipe(assert.length(20))
+            .on('end', function(err) {
+                (typeof err === 'undefined').should.be.true;
+                done();
+            });
+    });
+
    it('should assert source length when match', function (done) {
        gulp.src(['./test/fixtures/template.js', './test/fixtures/destiny.js'])
            .pipe(assert.length(2))
