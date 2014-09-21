@@ -32,7 +32,7 @@ it('should pass data to next when undeclared', function (done) {
 
 ## API
 
-Builder for asserting gulp stream. Constructed stream will emit `end` after stream assert, without any augument for success, with assertion error as first argument for fail. 
+Build for asserting gulp stream. Constructed stream will emit `end` after stream assert, without any augument for success, with assertion error as first argument for fail. 
 
 ### Assertion
 Assertion is a funtion with each file as the first argument, just assert the file. For example:
@@ -73,11 +73,10 @@ Calls `assertion` function on every-child element in stream. Only if any of the 
 match the assertion, then pass success.
 
 ## Assert chain
-As promised, now it does support chain assert after v0.2.x, better than `stream-assert`.  
-Pay attention when you need chain assert, assert below just work right, when all the 
-assertion passed, the `done` callback has no argument. when any assertion failed, it 
-will jump to the end, and `done` callback has error(this assertion throwed) as first 
-argument.
+As promised, now it does support chain assert after v0.2.x. Pay attention when you need 
+chain assert, assert below just work right, when all the assertion passed, the `done` 
+callback has no argument. when any assertion failed, it will jump to the end, and `done`
+callback has error(this assertion throwed) as first argument.
 
 Till now, `length`, `nth`, `first`, `last` support chained asssertion, also, `all` and `any`
 works for chained assertion since v0.4.0.
