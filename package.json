@@ -1,6 +1,6 @@
 {
   "name": "stream-assert-gulp",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "simplify assertion library for gulp streams",
   "main": "index.js",
   "scripts": {
