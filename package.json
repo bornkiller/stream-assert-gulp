@@ -1,6 +1,6 @@
 {
   "name": "stream-assert-gulp",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "description": "simplify assertion library for gulp streams",
   "main": "index.js",
   "scripts": {
@@ -26,8 +26,8 @@
     "through-gulp": "^0.3.0"
   },
   "devDependencies": {
-    "gulp": "^3.8.7",
-    "gulp-jshint": "^1.8.5",
+    "gulp": "^3.8.9",
+    "gulp-jshint": "^1.8.6",
     "gulp-mocha": "^1.1.1",
     "istanbul": "^0.3.2",
     "jshint-stylish": "^0.4.0",
