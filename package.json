@@ -3,35 +3,33 @@
   "version": "0.4.5",
   "description": "simplify assertion library for gulp streams",
   "main": "index.js",
-  "scripts": {
-    "test": "gulp test"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/bornkiller/stream-assert-gulp.git"
-  },
+  "author": "bornkiller <hjj491229492@hotmail.com>",
   "keywords": [
     "assert",
     "stream",
     "gulp"
   ],
-  "author": "bornkiller <hjj491229492@hotmail.com>",
-  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/bornkiller/stream-assert-gulp.git"
+  },
+  "homepage": "https://github.com/bornkiller/stream-assert-gulp.git",
   "bugs": {
     "url": "https://github.com/bornkiller/stream-assert-gulp.git/issues"
   },
-  "homepage": "https://github.com/bornkiller/stream-assert-gulp.git",
   "dependencies": {
-    "should": "^4.0.4",
-    "through-gulp": "^0.3.0"
+    "through-gulp": "^0.3.5"
   },
   "devDependencies": {
-    "gulp": "^3.8.9",
-    "gulp-jshint": "^1.8.6",
-    "gulp-mocha": "^1.1.1",
-    "istanbul": "^0.3.2",
-    "jshint-stylish": "^0.4.0",
-    "mocha": "^1.21.5",
-    "should": "^4.0.4"
-  }
+    "gulp": "^3.8.10",
+    "gulp-jshint": "^1.9.0",
+    "istanbul": "^0.3.5",
+    "jshint-stylish": "^1.0.0",
+    "mocha": "^2.1.0",
+    "should": "^4.4.1"
+  },
+  "scripts": {
+    "test-travis": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha --report lcovonly"
+  },
+  "license": "MIT"
 }

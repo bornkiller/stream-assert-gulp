@@ -1,78 +1,80 @@
+var assert = require('assert');
 var through = require('through-gulp');
-require('should');
-var assert = {};
-assert.nth = function(index, assertion) {
-    var assetStorage = [];
-    var stream;
-    var error;
-    stream = through(function (file, encoding, callback) {
-        if (file instanceof Error) {
-            error = file;
-        } else {
-            this.push(file);
-            assetStorage.push(file);
-        }
-        callback();
-    }, function (callback) {
-        if (error instanceof Error) {
-            this.push(error);
-            this.emit('end', error);
-            callback();
-        } else {
-            try {
-                assertion(assetStorage[index-1]);
-                this.emit('end');
-                callback();
-            } catch (err) {
-                this.push(err);
-                this.emit('end', err);
-                callback();
-            }
-        }
-    });
 
-    return stream;
+var streamAssert = {};
+streamAssert.nth = function(index, assertion) {
+  var assetStorage = []
+    , stream
+    , error;
+
+  stream = through(function (file, encoding, callback) {
+      if (file instanceof Error) {
+        error = file;
+      } else {
+        this.push(file);
+        assetStorage.push(file);
+      }
+      callback();
+    }, function (callback) {
+      if (error instanceof Error) {
+        this.push(error);
+        this.emit('end', error);
+        callback();
+      } else {
+        try {
+          assertion(assetStorage[index-1]);
+          this.emit('end');
+          callback();
+        } catch (err) {
+          this.push(err);
+          this.emit('end', err);
+          callback();
+        }
+      }
+  });
+
+  return stream;
 };
 
-assert.first = function(assertion) {
-    var assetStorage = [];
-    var stream;
-    var error;
-    stream = through(function (file, encoding, callback) {
-        if (file instanceof Error) {
-            error = file;
-        } else {
-            this.push(file);
-            assetStorage.push(file);
-        }
-        callback();
+streamAssert.first = function(assertion) {
+  var assetStorage = []
+    , stream
+    , error;
+  stream = through(function (file, encoding, callback) {
+      if (file instanceof Error) {
+        error = file;
+      } else {
+        this.push(file);
+        assetStorage.push(file);
+      }
+      callback();
     }, function (callback) {
-        if (error instanceof Error) {
-            this.push(error);
-            this.emit('end', error);
-            callback();
-        } else {
-            try {
-                assertion(assetStorage[0]);
-                this.emit('end');
-                callback();
-            } catch (err) {
-                this.push(err);
-                this.emit('end', err);
-                callback();
-            }
+      if (error instanceof Error) {
+        this.push(error);
+        this.emit('end', error);
+        callback();
+      } else {
+        try {
+          assertion(assetStorage[0]);
+          this.emit('end');
+          callback();
+        } catch (err) {
+          this.push(err);
+          this.emit('end', err);
+          callback();
         }
-    });
+      }
+  });
 
-    return stream;
+  return stream;
 };
 
-assert.second = function(assertion) {
-    var assetStorage = [];
-    var stream;
-    var error;
-    stream = through(function (file, encoding, callback) {
-        if (file instanceof Error) {
+streamAssert.second = function(assertion) {
+  var assetStorage = []
+    , stream
+    , error;
+  stream = through(function (file, encoding, callback) {
+    if (file instanceof Error) {
             error = file;
         } else {
             this.push(file);
@@ -100,7 +102,7 @@ assert.second = function(assertion) {
     return stream;
 };
 
-assert.last = function(assertion) {
+streamAssert.last = function(assertion) {
     var assetStorage = [];
     var stream;
     var error;
@@ -134,7 +136,7 @@ assert.last = function(assertion) {
     return stream;
 };
 
-assert.all = function(assertion) {
+streamAssert.all = function(assertion) {
     var assetStorage = [];
     var stream;
     var flag;
@@ -177,7 +179,7 @@ assert.all = function(assertion) {
     return stream;
 };
 
-assert.any = function(assertion) {
+streamAssert.any = function(assertion) {
     var assetStorage = [];
     var stream;
     var flag;
@@ -220,7 +222,7 @@ assert.any = function(assertion) {
     return stream;
 };
 
-assert.length = function(count) {
+streamAssert.length = function(count) {
     var assetStorage = [];
     var stream;
     var error;
@@ -239,7 +241,7 @@ assert.length = function(count) {
             callback();
         } else {
             try {
-                (assetStorage.length).should.equal(count);
+                assert.equal(assetStorage.length, count);
                 this.emit('end');
                 callback();
             } catch (err) {
@@ -253,4 +255,4 @@ assert.length = function(count) {
     return stream;
 };
 
-module.exports = assert;
+module.exports = streamAssert;

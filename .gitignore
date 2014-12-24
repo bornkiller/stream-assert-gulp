@@ -3,3 +3,4 @@ node_modules
 .DG*
 /.idea/inspectionProfiles/*.xml
 /.idea/inspectionProfiles/profiles_settings.xml
+coverage

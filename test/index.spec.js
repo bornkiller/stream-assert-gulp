@@ -1,8 +1,6 @@
-/* global describe, it */
 var gulp = require('gulp');
 var assert = require('../index.js');
-require('mocha');
-require('should');
+var should = require('should');
 
 describe('assert nth-child', function () {
     it('should assert any child when pass', function (done) {
@@ -96,17 +94,17 @@ describe('assert nth-child', function () {
 
 describe('assert length', function () {
     it('should work with many files', function (done) {
-        gulp.src(['./test/fixtures/many-files/*.js'])
-            .pipe(assert.length(20))
+        gulp.src(['./test/fixtures/many-files/1.js'])
+            .pipe(assert.length(1))
             .on('end', function(err) {
-                (typeof err === 'undefined').should.be.true;
+              err.should.be.an.error;
                 done();
             });
     });
 
    it('should assert source length when match', function (done) {
-       gulp.src(['./test/fixtures/template.js', './test/fixtures/destiny.js'])
-           .pipe(assert.length(2))
+       gulp.src(['./test/fixtures/many-files/*.js'])
+           .pipe(assert.length(15))
            .on('end', function(err) {
                (typeof  err === 'undefined').should.be.true;
                done();
@@ -188,7 +186,7 @@ describe('assert chain', function () {
             .pipe(assert.length(1))
             .on('end', function(err) {
                 err.should.be.a.Error;
-                (err.message).should.equal('expected 2 to be 3');
+                (err.message).should.equal('2 == 3');
                 done();
             })
     });
@@ -198,7 +196,7 @@ describe('assert chain', function () {
             .pipe(assert.length(2))
             .pipe(assert.length(1))
             .on('end', function(err) {
-                (err.message).should.equal('expected 2 to be 1');
+                (err.message).should.equal('2 == 1');
                 done();
             })
     });
