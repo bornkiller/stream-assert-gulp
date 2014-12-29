@@ -1,7 +1,7 @@
 /**
  * Expose object for assert gulp plugin file
  * @modules stream-assert-gulp
- * @version v0.4.8
+ * @version v0.4.9
  */
 
 /**
