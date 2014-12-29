@@ -160,6 +160,7 @@ streamAssert._assertAnyArray = function(assertion, file) {
   return mark;
 };
 
+
 /**
  * assert the index file in the transformed files
  * @param {number} index - the number of files
@@ -170,6 +171,7 @@ streamAssert.nth = function(index, assertion) {
   return streamAssert._origin('nth', assertion, index);
 };
 
+
 /**
  * assert the first file in the transformed files
  * @param {assertion} assertion
@@ -178,6 +180,7 @@ streamAssert.nth = function(index, assertion) {
 streamAssert.first = function(assertion) {
   return streamAssert.nth(1, assertion);
 };
+
 
 /**
  * assert the second file in the transformed files
@@ -188,6 +191,7 @@ streamAssert.second = function(assertion) {
   return streamAssert.nth(2, assertion);
 };
 
+
 /**
  * assert the last file in the transformed files
  * @param {assertion} assertion
@@ -196,6 +200,7 @@ streamAssert.second = function(assertion) {
 streamAssert.last = function(assertion) {
     return streamAssert.nth('last', assertion);
 };
+
 
 /**
  * assert all the files, assert failed if any mismatch
@@ -206,6 +211,7 @@ streamAssert.all = function(assertion) {
   return streamAssert._origin('all', assertion);
 };
 
+
 /**
  * assert all the files, assert success if any match
  * @param {assertion} assertion
@@ -214,6 +220,7 @@ streamAssert.all = function(assertion) {
 streamAssert.any = function(assertion) {
   return streamAssert._origin('any', assertion);
 };
+
 
 /**
  * assert length of the transformed files
