@@ -59,46 +59,105 @@ streamAssert._origin = function(flag, assertion, additional) {
       }
 
       // conform the assertion
-      try {
-        switch (flag) {
-          case 'nth':
-            additional = additional === 'last' ? assetStorage.length - 1 : additional - 1;
-            assertion(assetStorage[additional]);
-            this.emit('end');
-            break;
-          case 'length':
-            assert.equal(assetStorage.length, additional);
-            this.emit('end');
-            break;
-          case 'all':
-            for (var i = 0; i < assetStorage.length; i++) {
-              assertion(assetStorage[i]);
-            }
-            this.emit('end');
-            break;
-          case 'any':
-            mark = assetStorage.some(function(file) {
-              try {
-                assertion(file);
-                return true;
-              } catch (err) {
-                error = err;
-                return false;
-              }
-            });
-            if (!mark) throw error;
-            this.emit('end');
-            break;
-        }
-      } catch(err) {
-        this.push(err);
-        this.emit('end', err);
+      switch (flag) {
+        case 'nth':
+          additional = additional === 'last' ? assetStorage.length - 1 : additional - 1;
+          mark = streamAssert._assertSingleFile(assertion, assetStorage[additional]);
+          break;
+        case 'length':
+          mark = streamAssert._assertLength(additional, assetStorage);
+          break;
+        case 'all':
+          mark = streamAssert._assertAllArray(assertion, assetStorage);
+          break;
+        case 'any':
+          mark = streamAssert._assertAnyArray(assertion, assetStorage);
+          break;
       }
 
+    if (mark instanceof Error) this.push(mark);
+    this.emit('end', mark);
     callback();
   });
 
   return stream;
+};
+
+
+/**
+ * assert single file
+ * @param {assertion} assertion
+ * @param {object} file - gulp(vinyl) file object
+ * @returns {undefined|error} - error means fail while undefined means pass
+ * @private
+ */
+streamAssert._assertSingleFile = function(assertion, file) {
+  var mark;
+  try {
+    assertion(file);
+  } catch (error) {
+    mark = error;
+  }
+  return mark;
+};
+
+
+/**
+ * assert single file
+ * @param {number} length - expected length
+ * @param {Array} file - array filled with gulp(vinyl) file object
+ * @returns {undefined|error} - error means fail while undefined means pass
+ * @private
+ */
+streamAssert._assertLength = function(length, file) {
+  var mark;
+  try {
+    assert.equal(file.length, length);
+  } catch (error) {
+    mark = error;
+  }
+  return mark;
+};
+
+
+/**
+ * assert single file
+ * @param {assertion} assertion
+ * @param {Array} file - array filled with gulp(vinyl) file object
+ * @returns {undefined|error} - error means fail while undefined means pass
+ * @private
+ */
+streamAssert._assertAllArray = function(assertion, file) {
+  var mark;
+  try {
+    for (var i = 0; i < file.length; i++) {
+      assertion(file[i])
+    }
+  } catch (error) {
+    mark = error;
+  }
+  return mark;
+};
+
+
+/**
+ * assert single file
+ * @param {assertion} assertion
+ * @param {object} file - array filled with gulp(vinyl) file object
+ * @returns {undefined|error} - error means fail while undefined means pass
+ * @private
+ */
+streamAssert._assertAnyArray = function(assertion, file) {
+  var mark;
+  for (var i = 0; i < file.length; i++) {
+    try {
+      assertion(file[i]);
+      mark = undefined;
+    } catch (error) {
+      mark = error;
+    }
+  }
+  return mark;
 };
 
 /**

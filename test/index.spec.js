@@ -97,7 +97,7 @@ describe('assert length', function () {
     gulp.src(['./test/fixtures/destiny.js'])
       .pipe(assert.length(1))
       .on('end', function(err) {
-        err.should.be.an.error;
+        (typeof err === 'undefined').should.be.true;
         done();
       });
   });
